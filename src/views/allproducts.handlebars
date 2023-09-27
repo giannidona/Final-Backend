@@ -1,0 +1,33 @@
+{{#if isValid}}
+<div>
+   {{#each docs}}
+  <div class="product-card">
+    <img src="http://localhost:8080/static/{{this.image}}" alt="{{this.name}}" />
+    <div class="product-details">
+      <h2>{{this.name}}</h2>
+      <p>{{this.descrip}}</p>
+      <p>Price: {{this.price}}</p>
+      <p>Stock: {{this.stock}}</p>
+    </div>
+    <div class="product-actions">
+      <button class="btn-add-to-cart" data-product-id="{{this._id}}">Agregar al carrito</button>
+    </div>
+  </div>
+{{/each}}
+<br/>
+<div class="prev-next-btn">
+    {{#if hasPrevPage}}
+        <a href={{this.prevLink}}><< Anterior</a>
+    {{/if}}
+    &nbsp;
+    {{this.page}}
+    &nbsp;
+     {{#if hasNextPage}}
+        <a href={{this.nextLink}}>Siguiente >></a>
+    {{/if}} 
+</div>
+{{else}}
+<h1>No hay productos para mostrar</h1>
+{{/if}}
+
+<script src="/static/index.js"></script>

@@ -1,112 +1,106 @@
 import { Router } from "express";
-import ProductManager from "../productManager.js";
+import { uploader } from "../middlewares/multer.js";
+import ProductManager from "../dao/db/productManager.js";
+import { productModel } from "../dao/models/productModel.js";
 
 const router = Router();
 const productManager = new ProductManager();
 
-router.get("/products", async (req, res) => {
+// MUESTRA TODOS LOS PRODUCTOS
+router.get("/showproduct", async (req, res) => {
+  let page = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 10;
+  let sort = req.query.sort || "";
+  let query = req.query.query || "";
+
+  let queryConditions = {};
+  if (query) {
+    queryConditions = { type: query };
+  }
+
+  let sortOptions = {};
+  if (sort === "asc") {
+    sortOptions = { price: 1 };
+  } else if (sort === "desc") {
+    sortOptions = { price: -1 };
+  }
+
   try {
-    const limit = parseInt(req.query.limit);
+    let result = await productModel.paginate(queryConditions, {
+      page,
+      limit,
+      sort: sortOptions,
+      lean: true,
+    });
 
-    let products = await productManager.getProducts();
+    let totalPages = result.totalPages;
+    let hasPrevPage = result.hasPrevPage;
+    let hasNextPage = result.hasNextPage;
+    let prevPage = result.prevPage;
+    let nextPage = result.nextPage;
+    let prevLink = hasPrevPage ? `/api/showproduct?page=${prevPage}` : null;
+    let nextLink = hasNextPage ? `/api/showproduct?page=${nextPage}` : null;
 
-    if (limit) {
-      products = products.slice(0, limit);
-    }
+    let response = {
+      status: "success",
+      payload: result.docs,
+      totalPages,
+      prevPage,
+      nextPage,
+      page,
+      hasPrevPage,
+      hasNextPage,
+      prevLink,
+      nextLink,
+    };
 
-    res.json(products);
+    res.json(response);
   } catch (error) {
     console.error(error);
-    res.send({ error: "Error al obtener los productos." });
+    res.status(500).json({ status: "error", message: "Internal Server Error" });
   }
 });
-
-router.get("/products/:pid", async (req, res) => {
-  try {
-    const products = await productManager.getProducts();
-    const pid = parseInt(req.params.pid);
-
-    const product = products.find((prod) => prod.id === pid);
-
-    if (product) {
-      res.json(product);
-    }
-  } catch (error) {
-    res.send({ error: "No se encuentra ese ID" });
-  }
+// AGREGA UN PRODUCTO
+router.get("/addproduct", (req, res) => {
+  res.render("addproduct");
 });
 
-router.post("/products/", async (req, res) => {
+// PROCESA EL ENVIO
+router.post("/addproduct", uploader.single("file"), async (req, res) => {
   try {
-    const { title, description, img, price, code, status, stock } = req.body;
-
-    if (
-      !title ||
-      !description ||
-      !img ||
-      !price ||
-      !code ||
-      !status ||
-      !stock
-    ) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son requeridos." });
-    }
-
-    const newProd = await productManager.addProduct(
-      title,
-      description,
-      img,
+    const { name, price, stock, descrip } = req.body;
+    const image = req.file.originalname;
+    const prod = await productManager.create(
+      name,
       price,
-      code,
-      status,
-      stock
+      stock,
+      descrip,
+      image
     );
-    res.json(newProd);
+    res.status(200).send(prod);
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Error al agregar el producto." });
   }
 });
 
-router.put("/:pid", async (req, res) => {
+// ELIMINA EL PRODUCTO SEGUN EL ID
+router.delete("/deleteproduct/:pid", async (req, res) => {
   try {
-    const productId = parseInt(req.params.pid);
-    const updatedFields = req.body;
+    const productId = req.body.pid;
 
-    if (Object.keys(updatedFields).length === 0) {
+    if (!productId) {
       return res
         .status(400)
-        .json({ error: "No se proporcionaron campos para actualizar." });
+        .json({ error: "ID de producto no proporcionado." });
     }
 
-    const updatedProduct = await productManager.updateProduct(
-      productId,
-      updatedFields
-    );
+    await productManager.deleteProduct(productId);
 
-    res.json(updatedProduct);
+    res.json({ message: "Producto eliminado con éxito." });
   } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: "Error al actualizar el producto." });
-  }
-});
-
-router.delete("/:pid", async (req, res) => {
-  try {
-    const productId = parseInt(req.params.pid);
-
-    const deletedProduct = await productManager.deleteProduct(productId);
-
-    if (!deletedProduct) {
-      return res.status(404).json({ error: "Producto no encontrado." });
-    }
-
-    res.json(deletedProduct);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: "Error al eliminar el producto." });
+    console.error("Error al eliminar el producto:", error);
+    res.status(500).json({ error: "Error al eliminar el producto." });
   }
 });
 

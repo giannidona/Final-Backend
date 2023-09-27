@@ -1,0 +1,22 @@
+<form
+  action="http://localhost:8080/api/addproduct"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <label>Nombre:</label>
+  <input type="text" required name="name" />
+  <br />
+  <label>Price:</label>
+  <input type="number" required name="price" />
+  <br />
+  <label>Stock:</label>
+  <input type="number" required name="stock" />
+  <br />
+  <label>Description:</label>
+  <input type="text" required name="descrip" />
+  <br />
+  <label>Imagen:</label>
+  <input type="file" name="file" />
+  <br />
+  <button type="submit" value="submit">Enviar</button>
+</form>
