@@ -1,47 +1,51 @@
 import { productModel } from "../models/productModel.js";
 
-class ProductManager {
-  async create(name, price, stock, descrip, image) {
-    const product = await productModel.create({
-      name,
-      price,
-      stock,
-      descrip,
-      image,
-    });
-    return product;
-  }
-
-  async getAll() {
-    const products = await productModel.find().lean();
-    return products;
+export default class ProductManager {
+  async getProducts() {
+    try {
+      const products = await productModel.find({}).lean();
+      return products;
+    } catch (error) {
+      console.log("getProductsManager", error);
+    }
   }
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id).lean();
-      return product;
+      const { id } = req.params;
+      const product = await productModel.findById({ id });
     } catch (error) {
-      console.error("Error al obtener el producto por ID:", error);
-      throw error;
+      console.log("getProductByIdManager", error);
     }
   }
 
-  async updateProduct() {}
+  async createProduct(productData) {
+    try {
+      const newProduct = await productModel.create(productData);
+      console.log(newProduct);
+      return newProduct;
+    } catch (error) {
+      console.log("createProductManager", error);
+    }
+  }
+  async updateProduct(id, productData) {
+    try {
+      const productUpdated = await productModel.findByIdAndUpdate(
+        { id: _id },
+        productData
+      );
+      console.log(productUpdated);
+    } catch (error) {
+      console.log("updateProductManager", error);
+    }
+  }
 
   async deleteProduct(id) {
     try {
-      const deleteProduct = await productModel.deleteOne({ id });
-      if (deleteProduct === deleteProduct) {
-        console.log(`Se elimino el producto con id:${deleteProduct}`);
-      } else {
-        throw new Error("No se encontró el producto con el ID especificado.");
-      }
+      const productDeleted = await productModel.findByIdAndDelete({ id: _id });
+      console.log(productDeleted);
     } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-      throw error;
+      console.log("deleteProductManager", error);
     }
   }
 }
-
-export default ProductManager;

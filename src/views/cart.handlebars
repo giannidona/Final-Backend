@@ -1,0 +1,8 @@
+{{#each cart.products}}
+  <div class="cart-item">
+    <h2>{{this.product.name}}</h2>
+    <p>Quantity: {{this.quantity}}</p>
+  </div>
+{{/each}}
+
+<script src="/js/cart.js"></script>

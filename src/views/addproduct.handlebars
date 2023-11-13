@@ -1,9 +1,5 @@
-<form
-  action="http://localhost:8080/api/addproduct"
-  method="post"
-  enctype="multipart/form-data"
->
-  <label>Nombre:</label>
+<form action="/addproduct" method="post" enctype="multipart/form-data">
+  <label>Name:</label>
   <input type="text" required name="name" />
   <br />
   <label>Price:</label>
@@ -13,10 +9,10 @@
   <input type="number" required name="stock" />
   <br />
   <label>Description:</label>
-  <input type="text" required name="descrip" />
+  <input type="text" required name="description" />
   <br />
-  <label>Imagen:</label>
+  <label>Product Image:</label>
   <input type="file" name="file" />
   <br />
-  <button type="submit" value="submit">Enviar</button>
+  <button type="submit" value="submit">Create</button>
 </form>
