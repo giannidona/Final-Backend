@@ -3,8 +3,6 @@ import cartController from "../controllers/cartController.js";
 
 const router = Router();
 
-router.get("/cart", cartController.renderCart);
-
-router.post("/cart/:productId", cartController.addToCart);
+router.get("/ticket", cartController.ticket);
 
 export default router;

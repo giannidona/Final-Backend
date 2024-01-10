@@ -1,100 +1,93 @@
-import cartModel from "../dao/models/cartModel.js";
-import { productModel } from "../dao/models/productModel.js";
-import { userModel } from "../dao/models/userModel.js";
-import { ticketModel } from "../dao/models/ticketModel.js";
+import { cartService } from "../services/services.js";
+import { userService } from "../services/services.js";
+import { productService } from "../services/services.js";
+import { ticketService } from "../services/services.js";
 
 const addToCart = async (req, res) => {
   try {
     const productId = req.params.productId;
     const userId = req.session.userId;
 
-    const user = await userModel.findById(userId).populate("cart");
-    const cart = user.cart;
+    const user = await userService.getById({ _id: userId }).populate("cart");
+    const userCart = user.cart || { products: [] };
 
-    const existingProduct = cart.products.find(
-      (product) => product.product.toString() === productId
+    let productInfo;
+
+    const existingProduct = userCart.products.find(
+      (product) => product.product.toString() === productId.toString()
     );
 
     if (existingProduct) {
-      existingProduct.quantity += 1;
+      existingProduct.quantity++;
+      existingProduct.price = existingProduct.quantity * existingProduct.price;
     } else {
-      cart.products.push({
+      productInfo = await productService.getById({ _id: productId }).lean();
+      const productPrice = productInfo.price;
+
+      const newProduct = {
         product: productId,
         quantity: 1,
+        price: productPrice,
+      };
+
+      userCart.products.push(newProduct);
+    }
+
+    if (productInfo) {
+      userCart.products.forEach((product) => {
+        product.price = product.quantity * productInfo.price;
       });
     }
 
-    const product = await productModel.findById(productId);
-    if (product) {
-      product.stock -= 1;
-      await product.save();
-    }
+    await cartService.update(userCart._id, { products: userCart.products });
 
-    await cart.save();
-
-    res.json({ message: "product added succefully" });
+    res.redirect("/home");
   } catch (error) {
-    console.error("Error al agregar el producto al carrito", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error, "addToCart cartController");
+    res.status(500).send("Error al agregar producto al carrito");
   }
 };
 
-export { addToCart };
-
-const viewCart = async (req, res) => {
-  try {
-    const userId = req.session.userId;
-
-    const user = await userModel
-      .findById(userId)
-      .populate({
-        path: "cart",
-        populate: {
-          path: "products.product",
-          model: "products",
-        },
-      })
-      .lean();
-    const cart = user.cart;
-
-    res.render("cart", { cart });
-  } catch (error) {
-    console.error("Error getting cart", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+const renderCart = async (req, res) => {
+  const userId = req.session.userId;
+  const cart = await cartService.getById({ user: userId }).lean();
+  res.render("cart", { cart });
 };
 
-export { viewCart };
-
-const finalizePurchase = async (req, res) => {
+const ticket = async (req, res) => {
   try {
     const purchaserEmail = req.session.email;
+    const userId = req.session.userId;
 
-    const { cid } = req.params;
-    const cart = await cartModel.findById(cid).populate("products.product");
+    // Obtener el carrito del usuario
+    const user = await userService.getById({ _id: userId }).populate("cart");
+    const cart = user.cart;
 
     if (!cart) {
-      return res.status(404).json({ message: "cart not found" });
+      return res.status(404).json({ message: "Cart not found" });
     }
 
     const amount = cart.products.reduce((total, item) => {
-      return total + item.product.price * item.quantity;
+      return total + item.price;
     }, 0);
 
-    const ticket = new ticketModel({
+    // Crear un nuevo objeto de ticket basado en el modelo de Mongoose
+    const newTicket = {
       code: generateUniqueCode(),
       amount,
       purchaser: purchaserEmail,
-    });
+    };
 
-    await ticket.save();
+    // Guardar el nuevo ticket en la base de datos usando el método save del repository
+    await ticketService.save(newTicket);
 
-    return res
-      .status(200)
-      .json({ message: "Purchase completed successfully", ticket });
+    // Limpiar el carrito después de generar el ticket
+    await cartService.update(cart._id, { products: [] });
+
+    res.render("ticket", { ticket: newTicket });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Error during checkout", error });
+    console.error(error, "ticket cartController");
+    res.status(500).json({ message: "Error during checkout", error });
   }
 };
 
@@ -102,4 +95,4 @@ const generateUniqueCode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
 
-export { finalizePurchase };
+export default { addToCart, renderCart, ticket };

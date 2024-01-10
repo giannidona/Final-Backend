@@ -1,8 +1,36 @@
-{{#each cart.products}}
-  <div class="cart-item">
-    <h2>{{this.product.name}}</h2>
-    <p>Quantity: {{this.quantity}}</p>
-  </div>
-{{/each}}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="bg-red-500 flex justify-between p-5">
+      <div>
+        <a href="/home">LOGO</a>
+      </div>
+      <div>
+        <input type="text" />
+      </div>
+      <div class="flex">
+        <a href="/cart">cart</a>
+        <p class="px-2">profile</p>
+      </div>
+    </nav>
 
-<script src="/js/cart.js"></script>
+    <h2 class="text-center font-bold my-10">PRODUCTS IN CART</h2>
+    <section class="container text-center m-auto">
+      {{#each cart.products}}
+        <div class="bg-green-500 inline-flex mx-auto">
+          <p class="mx-5">{{this.product.prod_name}}</p>
+          <p class="mx-5">{{this.quantity}}</p>
+          <p class="mx-5">${{this.price}}</p>
+        </div>
+      {{/each}}
+      <div class="mt-5">
+        <a class="bg-yellow-500 p-2" href="/ticket">Finalize purcharse</a>
+      </div>
+    </section>
+
+  </body>
+</html>

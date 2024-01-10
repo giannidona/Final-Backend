@@ -1,18 +1,8 @@
 import { Router } from "express";
+import homeController from "../controllers/homeController.js";
 
-const router = new Router();
+const router = Router();
 
-router.get("/home", async (req, res) => {
-  try {
-    if (!req.session.isLogged) {
-      return res.redirect("/login");
-    }
-
-    const { username, surname } = req.session;
-    res.render("home", { username, surname });
-  } catch (error) {
-    console.log(error);
-  }
-});
+router.get("/home", homeController.renderHome);
 
 export default router;

@@ -1,31 +1,21 @@
-import ProductManager from "../dao/db/ProductManager.js";
+import { productService } from "../services/services.js";
 
-const productManager = new ProductManager();
-
-export const showProducts = async (req, res) => {
+const createProduct = async (req, res) => {
   try {
-    const products = await productManager.getProducts();
-
-    const btnAddProd = products.some((product) => product.stock > 1);
-
-    res.render("products", { products, btnAddProd });
-  } catch (error) {
-    console.log("show products controller: ", error);
-  }
-};
-
-export const createProduct = async (req, res) => {
-  try {
-    const { name, price, stock, description } = req.body;
-    const product_image = req.file.originalname;
-    const newProduct = await productManager.createProduct({
-      name,
-      price,
-      stock,
+    const { prod_name, description, stock, price } = req.body;
+    const prod_image = req.file.originalname;
+    const newProduct = await productService.create({
+      prod_name,
       description,
-      product_image,
+      stock,
+      price,
+      prod_image,
     });
+    console.log(newProduct);
+    res.redirect("/home");
   } catch (error) {
-    console.log("create product controller: ", error);
+    console.log(error, "createProduct productController");
   }
 };
+
+export default { createProduct };
