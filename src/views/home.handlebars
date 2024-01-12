@@ -9,17 +9,13 @@
       <div>
         <a href="/home">LOGO</a>
       </div>
-      <div>
-        <input type="text" />
-      </div>
-      <div>
-        {{#if isAdmin}}
-          <a href="/createproduct">create product</a>
-        {{/if}}
-      </div>
       <div class="flex">
-        <a href="/cart">cart</a>
-        <p class="px-2">profile</p>
+        <a href="/home">home</a>
+        {{#if isAdmin}}
+          <a class="px-2" href="/api/productManager">product manager</a>
+          <a href="/api/users">user manager</a>
+        {{/if}}
+        <a class="px-2" href="/cart">cart</a>
       </div>
     </nav>
     <div class="text-center">

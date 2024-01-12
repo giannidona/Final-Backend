@@ -18,4 +18,22 @@ const createProduct = async (req, res) => {
   }
 };
 
-export default { createProduct };
+const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.body.prodId;
+
+    const product = await productService.getById({ _id: productId });
+
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    await productService.delete(productId);
+
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error, "deleteProduct productController");
+  }
+};
+
+export default { createProduct, deleteProduct };

@@ -5,6 +5,19 @@
     <title>Document</title>
   </head>
   <body>
+    <nav class="bg-red-500 flex justify-between p-5">
+      <div>
+        <a href="/home">LOGO</a>
+      </div>
+      <div class="flex">
+        <a href="/home">home</a>
+        {{#if isAdmin}}
+          <a class="px-2" href="/api/productManager">product manager</a>
+          <a href="/api/users">user manager</a>
+        {{/if}}
+        <a class="px-2" href="/cart">cart</a>
+      </div>
+    </nav>
     <h1>TICKET</h1>
     <div>
       <p>{{ticket.code}}</p>

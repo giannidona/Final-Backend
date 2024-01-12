@@ -1,0 +1,43 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dashboard</title>
+  </head>
+  <body>
+    <nav class="bg-red-500 flex justify-between p-5">
+      <div>
+        <a href="/home">LOGO</a>
+      </div>
+      <div class="flex">
+        <a href="/home">home</a>
+        {{#if isAdmin}}
+          <a class="px-2" href="/api/createproduct">product manager</a>
+          <a href="/api/users">user manager</a>
+        {{/if}}
+        <a class="px-2" href="/cart">cart</a>
+      </div>
+    </nav>
+    <section>
+      <h2 class="text-center my-5">USERS LIST</h2>
+      <div class="flex justify-center">
+        {{#each users}}
+          <div class="mx-5 border border-black p-2 rounded">
+            <p>{{username}}</p>
+            <p>{{email}}</p>
+            <form action="/api/users/updateRole" method="post">
+              <label for="role">Role:</label>
+              <select name="role" id="role">
+                <option value="admin">Admin</option>
+                <option value="premium">Premium</option>
+                <option value="default">Default</option>
+              </select>
+              <input type="hidden" name="userId" value="{{_id}}" />
+              <button type="submit">Update</button>
+            </form>
+          </div>
+        {{/each}}
+      </div>
+    </section>
+  </body>
+</html>

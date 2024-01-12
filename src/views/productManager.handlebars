@@ -5,14 +5,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>CREATE PRODUCT</title>
   </head>
-  <body class="flex items-center justify-center h-screen">
-    <section class="bg-black text-white rounded">
+  <body class="">
+    <nav class="bg-red-500 flex justify-between p-5">
+      <div>
+        <a href="/home">LOGO</a>
+      </div>
+      <div class="flex">
+        <a href="/home">home</a>
+        {{#if isAdmin}}
+          <a class="px-2" href="/api/productManager">product manager</a>
+          <a href="/api/users">user manager</a>
+        {{/if}}
+        <a class="px-2" href="/cart">cart</a>
+      </div>
+    </nav>
+    <section class="flex">
       <form
-        class="mb-0"
-        action="/createproduct"
+        class="mx-auto mt-5 bg-black text-white rounded"
+        action="/productManager"
         method="post"
         enctype="multipart/form-data"
       >
+        <p class="text-center">CREATE PRODUCT</p>
         <div class="m-5">
           <div>
             <label for="prod_name">PRODUCT NAME</label>
@@ -83,6 +97,32 @@
             class="bg-white text-black rounded px-2 font-bold"
             type="submit"
           >CREATE</button>
+        </div>
+      </form>
+      <form
+        class="mx-auto mt-5 bg-black text-white rounded"
+        action="/api/productManager/delete"
+        method="post"
+      >
+        <p class="text-center">DELETE PRODUCT</p>
+        <div class="m-5">
+          <div>
+            <label for="prodId">PRODUCT ID</label>
+          </div>
+          <div>
+            <input
+              class="text-black rounded mt-2"
+              type="text"
+              id="prodId"
+              name="prodId"
+            />
+          </div>
+        </div>
+        <div class="m-5 text-center">
+          <button
+            class="bg-white text-black rounded px-2 font-bold"
+            type="submit"
+          >DELETE</button>
         </div>
       </form>
     </section>

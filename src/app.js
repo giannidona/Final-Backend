@@ -8,9 +8,10 @@ import cookieParser from "cookie-parser";
 
 import sessionsRouter from "./routes/sessionsRouter.js";
 import homeRouter from "./routes/homeRouter.js";
-import createProductRouter from "./routes/createProduct.js";
+import productManagerRouter from "./routes/productManagerRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import ticketRouter from "./routes/ticketRouter.js";
+import usersManagerRouter from "./routes/usersManagerRouter.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -46,6 +47,7 @@ app.set("view engine", "handlebars");
 
 app.use(sessionsRouter);
 app.use(homeRouter);
-app.use(createProductRouter);
+app.use("/api", productManagerRouter);
 app.use(cartRouter);
 app.use(ticketRouter);
+app.use("/api", usersManagerRouter);
