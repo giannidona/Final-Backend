@@ -1,10 +1,8 @@
 import { Router } from "express";
 
-import authorize from "../middlewares/authorize.js";
-
 const router = new Router();
 
-router.get("/chat", authorize, async (req, res) => {
+router.get("/chat", async (req, res) => {
   try {
     if (!req.session.isLogged) {
       return res.redirect("/login");

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import MongoStore from "connect-mongo";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 import sessionsRouter from "./routes/sessionsRouter.js";
 import homeRouter from "./routes/homeRouter.js";
@@ -26,6 +27,7 @@ mongoose.connect(MONGO_URL);
 app.use("/static", express.static("./public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({

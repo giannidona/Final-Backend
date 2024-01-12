@@ -12,6 +12,11 @@
       <div>
         <input type="text" />
       </div>
+      <div>
+        {{#if isAdmin}}
+          <a href="/createproduct">create product</a>
+        {{/if}}
+      </div>
       <div class="flex">
         <a href="/cart">cart</a>
         <p class="px-2">profile</p>
@@ -21,6 +26,7 @@
       <p>{{this.username}}</p>
       <p>{{this.surname}}</p>
       <p>{{this.email}}</p>
+      <p>{{this.role}}</p>
     </div>
 
     <h2 class="text-center font-bold my-10">PRODUCTS</h2>

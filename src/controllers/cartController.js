@@ -59,7 +59,6 @@ const ticket = async (req, res) => {
     const purchaserEmail = req.session.email;
     const userId = req.session.userId;
 
-    // Obtener el carrito del usuario
     const user = await userService.getById({ _id: userId }).populate("cart");
     const cart = user.cart;
 
@@ -71,17 +70,14 @@ const ticket = async (req, res) => {
       return total + item.price;
     }, 0);
 
-    // Crear un nuevo objeto de ticket basado en el modelo de Mongoose
     const newTicket = {
       code: generateUniqueCode(),
       amount,
       purchaser: purchaserEmail,
     };
 
-    // Guardar el nuevo ticket en la base de datos usando el método save del repository
     await ticketService.save(newTicket);
 
-    // Limpiar el carrito después de generar el ticket
     await cartService.update(cart._id, { products: [] });
 
     res.render("ticket", { ticket: newTicket });

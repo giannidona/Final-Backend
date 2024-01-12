@@ -1,15 +1,20 @@
 import { userService } from "../services/services.js";
 import { cartService } from "../services/services.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { JWT_PRIVATE_KEY } from "../config/constants.js";
+import jwtAuth from "../middlewares/jwtAuth.js";
 
 const register = async (req, res) => {
   try {
-    if (req.session.isLogged) {
-      return res.redirect("/home");
-    }
-
     const { username, surname, email, password } = req.body;
 
-    const newUser = await createCart({ username, surname, email, password });
+    const newUser = await createCart({
+      username,
+      surname,
+      email,
+      password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+    });
 
     res.redirect("/login");
   } catch (error) {
@@ -38,23 +43,27 @@ const createCart = async (userData) => {
 
 const login = async (req, res) => {
   try {
-    if (req.session.isLogged) {
-      return res.redirect("/home");
+    const { username, password } = req.body;
+    const user = await userService.findOne({ username }).lean();
+    const access_token = jwt.sign({ user }, JWT_PRIVATE_KEY, {
+      expiresIn: "24h",
+    });
+
+    if (!user) {
+      return res.send("las credenciales no existen");
+    }
+    if (!bcrypt.compare(password, user.password)) {
+      return res.send("las credenciales no son correctas");
     }
 
-    const { username, password } = req.body;
-    const user = await userService.findOne({ username, password }).lean();
-    if (user) {
-      req.session.username = user.username;
-      req.session.surname = user.surname;
-      req.session.email = user.email;
-      req.session.userId = user._id;
-      req.session.isLogged = true;
-      res.redirect("/home");
-    } else {
-      res.render("login");
-    }
-    return user;
+    req.session.username = user.username;
+    req.session.surname = user.surname;
+    req.session.email = user.email;
+    req.session.userId = user._id;
+    req.session.isLogged = true;
+    req.session.role = user.role;
+    console.log(user);
+    return res.redirect("/home");
   } catch (error) {
     console.log(error, "login sessionController");
   }

@@ -2,13 +2,12 @@ import { productService } from "../services/services.js";
 
 const renderHome = async (req, res) => {
   try {
-    if (!req.session.isLogged) {
-      res.redirect("/login");
-    }
-    const { username, surname, email } = req.session;
+    const { username, surname, email, role } = req.session;
+    const isAdmin = role === "admin";
+
     const products = await productService.getAll().lean();
 
-    res.render("home", { username, surname, email, products });
+    res.render("home", { username, surname, email, role, products, isAdmin });
   } catch (error) {
     console.log(error, "renderHome homeController");
   }
