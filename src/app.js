@@ -36,8 +36,8 @@ app.use(
       ttl: 2 * 60,
     }),
     secret: SECRET,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
   })
 );
 

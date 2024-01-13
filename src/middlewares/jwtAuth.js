@@ -3,6 +3,7 @@ import { JWT_PRIVATE_KEY } from "../config/constants.js";
 
 const jwtAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
+  console.log(authHeader);
 
   if (!authHeader) {
     return res.status(401).send();

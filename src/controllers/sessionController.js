@@ -3,7 +3,6 @@ import { cartService } from "../services/services.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_PRIVATE_KEY } from "../config/constants.js";
-import jwtAuth from "../middlewares/jwtAuth.js";
 
 const register = async (req, res) => {
   try {
@@ -45,9 +44,16 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await userService.findOne({ username }).lean();
-    const access_token = jwt.sign({ user }, JWT_PRIVATE_KEY, {
-      expiresIn: "24h",
+    const userMiniData = {
+      username: user.username,
+      role: user.role,
+    };
+    console.log(userMiniData);
+
+    const token = jwt.sign({ user: userMiniData }, JWT_PRIVATE_KEY, {
+      expiresIn: "300s",
     });
+    console.log(token);
 
     if (!user) {
       return res.send("las credenciales no existen");
@@ -62,6 +68,7 @@ const login = async (req, res) => {
     req.session.userId = user._id;
     req.session.isLogged = true;
     req.session.role = user.role;
+
     return res.redirect("/home");
   } catch (error) {
     console.log(error, "login sessionController");

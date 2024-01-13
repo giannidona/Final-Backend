@@ -1,11 +1,10 @@
 import { Router } from "express";
-import isAdmin from "../middlewares/authorize.js";
 import usersController from "../controllers/usersController.js";
 
 const router = Router();
 
-router.get("/users", isAdmin, usersController.showUsers);
+router.get("/users", usersController.showUsers);
 
-router.post("/users/updateRole", isAdmin, usersController.updateRole);
+router.post("/users/updateRole", usersController.updateRole);
 
 export default router;
