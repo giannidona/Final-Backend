@@ -51,7 +51,7 @@ const login = async (req, res) => {
     console.log(userMiniData);
 
     const token = jwt.sign({ user: userMiniData }, JWT_PRIVATE_KEY, {
-      expiresIn: "300s",
+      expiresIn: "24h",
     });
     console.log(token);
 

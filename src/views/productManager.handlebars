@@ -12,17 +12,17 @@
       </div>
       <div class="flex">
         <a href="/home">home</a>
-        {{#if isAdmin}}
-          <a class="px-2" href="/api/productManager">product manager</a>
-          <a href="/api/users">user manager</a>
-        {{/if}}
+        <a class="px-2" href="/chat">chat</a>
+        <a class="px-2" href="/api/productManager">product manager</a>
+        <a href="/api/usersManager">user manager</a>
         <a class="px-2" href="/cart">cart</a>
       </div>
     </nav>
+
     <section class="flex">
       <form
         class="mx-auto mt-5 bg-black text-white rounded"
-        action="/productManager"
+        action="/api/productManager"
         method="post"
         enctype="multipart/form-data"
       >

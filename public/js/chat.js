@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const messageInput = document.getElementById("message-input");
   const usernameElement = document.getElementById("username");
-  const imageElement = document.getElementById("image");
   const messageBox = document.getElementById("message-box");
 
   const socket = io();
@@ -11,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (messageContent !== "") {
       const username = usernameElement.textContent;
-      const imageUrl = imageElement.src;
-      socket.emit("message", { username, messageContent, image: imageUrl });
+      socket.emit("message", { username, messageContent });
       messageInput.value = "";
     }
   });
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("new_message", (data) => {
     const messageDiv = document.createElement("div");
 
-    messageDiv.innerHTML = `<img class="w-5 rounded-full" src="${data.image}" alt="" />
+    messageDiv.innerHTML = `
       <span class="text-sm">${data.username}</span><p class="pt-none">${data.messageContent}</p>`;
     messageBox.appendChild(messageDiv);
     messageDiv.scrollIntoView();

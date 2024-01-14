@@ -1,48 +1,49 @@
-<nav class="bg-red-500 flex justify-between p-5">
-  <div>
-    <a href="/home">LOGO</a>
-  </div>
-  <div class="flex">
-    <a href="/home">home</a>
-    {{#if isAdmin}}
-      <a class="px-2" href="/api/productManager">product manager</a>
-      <a href="/api/users">user manager</a>
-    {{/if}}
-    <a class="px-2" href="/cart">cart</a>
-  </div>
-</nav>
-<h1 class="text-center mt-5 mb-5 font-bold">CHAT</h1>
-
-<div
-  class="w-11/12 sm:w-1/2 m-auto h-4/6 border-2 border-black rounded-lg overflow-auto"
->
-  <div id="container-msj" class="flex">
-    <div class="break-all m-2">
-      <img
-        id="image"
-        src="/static/{{this.profile_image}}"
-        alt=""
-        class="hidden"
-      />
-      <span id="username" class="text-sm hidden">{{this.user}}</span>
-      <p id="message-box" class="pt-none break-word"></p>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/static/js/chat.js"></script>
+    <title>CHAT</title>
+  </head>
+  <body>
+    <nav class="bg-red-500 flex justify-between p-5">
+      <div>
+        <a href="/home">LOGO</a>
+      </div>
+      <div class="flex">
+        <a href="/home">home</a>
+        <a class="px-2" href="/chat">chat</a>
+        <a class="px-2" href="/api/productManager">product manager</a>
+        <a href="/api/usersManager">user manager</a>
+        <a class="px-2" href="/cart">cart</a>
+      </div>
+    </nav>
+    <h1 class="text-center mt-5 mb-5 font-bold">CHAT</h1>
+    <div
+      class="w-11/12 sm:w-1/2 m-auto h-4/6 border-2 border-black rounded-lg overflow-auto"
+    >
+      <div id="container-msj" class="flex">
+        <div class="break-all m-2">
+          <span id="username" class="text-sm hidden">{{this.username}}</span>
+          <p id="message-box" class="pt-none break-word"></p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="w-11/12 sm:w-1/2 mt-5 m-auto border-2 border-black rounded-lg">
-  <div id="container-input" class="flex justify-around my-2">
-    <input
-      class="border-2 border-black rounded-full w-2/3 px-2 py-1"
-      type="text"
-      id="message-input"
-    />
-    <button
-      type="submit"
-      class="bg-black text-white rounded px-3 hover:bg-neutral-700"
-    >Send</button>
-  </div>
-</div>
+    <div class="w-11/12 sm:w-1/2 mt-5 m-auto border-2 border-black rounded-lg">
+      <div id="container-input" class="flex justify-around my-2">
+        <input
+          class="border-2 border-black rounded-full w-2/3 px-2 py-1"
+          type="text"
+          id="message-input"
+        />
+        <button
+          type="submit"
+          class="bg-black text-white rounded px-3 hover:bg-neutral-700"
+        >Send</button>
+      </div>
+    </div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/static/js/chat.js"></script>
+  </body>
+</html>

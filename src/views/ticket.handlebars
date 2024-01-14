@@ -11,10 +11,9 @@
       </div>
       <div class="flex">
         <a href="/home">home</a>
-        {{#if isAdmin}}
-          <a class="px-2" href="/api/productManager">product manager</a>
-          <a href="/api/users">user manager</a>
-        {{/if}}
+        <a class="px-2" href="/chat">chat</a>
+        <a class="px-2" href="/api/productManager">product manager</a>
+        <a href="/api/usersManager">user manager</a>
         <a class="px-2" href="/cart">cart</a>
       </div>
     </nav>
@@ -24,5 +23,7 @@
       <p>{{ticket.amount}}</p>
       <p>{{ticket.purcharser}}</p>
     </div>
+
+    <a class="bg-orange-500 text-center" href="/home">BACK HOME</a>65
   </body>
 </html>
