@@ -9,19 +9,21 @@ const addToCart = async (req, res) => {
     const userId = req.session.userId;
 
     const user = await userService.getById({ _id: userId }).populate("cart");
-    const userCart = user.cart || { products: [] };
-
-    let productInfo;
+    const userCart = user.cart;
 
     const existingProduct = userCart.products.find(
       (product) => product.product.toString() === productId.toString()
     );
 
+    let productInfo;
+
+    productInfo = await productService.getById({ _id: productId }).lean();
+    console.log(productInfo);
+
     if (existingProduct) {
       existingProduct.quantity++;
       existingProduct.price = existingProduct.quantity * existingProduct.price;
     } else {
-      productInfo = await productService.getById({ _id: productId }).lean();
       const productPrice = productInfo.price;
 
       const newProduct = {
@@ -33,11 +35,9 @@ const addToCart = async (req, res) => {
       userCart.products.push(newProduct);
     }
 
-    if (productInfo) {
-      userCart.products.forEach((product) => {
-        product.price = product.quantity * productInfo.price;
-      });
-    }
+    userCart.products.forEach((product) => {
+      product.price = product.quantity * productInfo.price;
+    });
 
     await cartService.update(userCart._id, { products: userCart.products });
 
@@ -66,7 +66,9 @@ const ticket = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    const amount = cart.products.reduce((total, item) => {
+    const cartProducts = cart.products;
+
+    const amount = cartProducts.reduce((total, item) => {
       return total + item.price;
     }, 0);
 
@@ -77,6 +79,16 @@ const ticket = async (req, res) => {
     };
 
     await ticketService.save(newTicket);
+
+    for (const cartProduct of cartProducts) {
+      const product = await productService.getById({
+        _id: cartProduct.product,
+      });
+
+      const updatedStock = product.stock - cartProduct.quantity;
+
+      await productService.update(product._id, { stock: updatedStock });
+    }
 
     await cartService.update(cart._id, { products: [] });
 

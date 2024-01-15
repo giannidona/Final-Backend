@@ -34,11 +34,20 @@
           <p>${{this.price}}</p>
           <p>{{this.stock}} in stock</p>
           <form action="/cart/{{this._id}}" method="post">
-            <button
-              type="submit"
-              class="bg-orange-200 my-2"
-              id="add-to-cart"
-            >add to cart</button>
+            {{#if this.outOfStock}}
+              <button
+                type="button"
+                class="bg-gray-400 my-2"
+                id="out-of-stock"
+                disabled
+              >out of stock</button>
+            {{else}}
+              <button
+                type="submit"
+                class="bg-orange-200 my-2"
+                id="add-to-cart"
+              >add to cart</button>
+            {{/if}}
           </form>
         </div>
       {{/each}}

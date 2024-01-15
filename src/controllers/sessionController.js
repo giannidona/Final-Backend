@@ -53,7 +53,6 @@ const login = async (req, res) => {
     const token = jwt.sign({ user: userMiniData }, JWT_PRIVATE_KEY, {
       expiresIn: "24h",
     });
-    console.log(token);
 
     if (!user) {
       return res.send("las credenciales no existen");
