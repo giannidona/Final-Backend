@@ -9,6 +9,11 @@ router.get("/users", privateRoutes, adminAccess, usersController.showUsers);
 
 router.post("/users/updateRole", usersController.updateRole);
 
-router.delete("/users/delete");
+router.delete(
+  "/users/delete",
+  privateRoutes,
+  adminAccess,
+  usersController.deleteInactiveUsers
+);
 
 export default router;

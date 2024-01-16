@@ -33,11 +33,5 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", function (next) {
-  const now = new Date();
-  this.last_connection = now;
-  next();
-});
-
 const userModel = mongoose.model(userCollection, userSchema);
 export { userModel };

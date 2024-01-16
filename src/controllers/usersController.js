@@ -1,4 +1,5 @@
 import { userService } from "../services/services.js";
+import nodemailer from "nodemailer";
 
 const showUsers = async (req, res) => {
   try {
@@ -23,4 +24,57 @@ const updateRole = async (req, res) => {
   }
 };
 
-export default { showUsers, updateRole };
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  auth: {
+    user: "gianicraft@gmail.com",
+    pass: "IfahJSWyvQPKpndx",
+  },
+});
+
+const deleteInactiveUsers = async (req, res) => {
+  try {
+    const users = await userService
+      .getAll()
+      .select("last_connection email")
+      .lean();
+
+    const currentDate = new Date();
+
+    const inactiveUsers = users.filter((user) => {
+      if (user.last_connection) {
+        const lastConnectionDate = new Date(user.last_connection);
+        const timeDifference = currentDate - lastConnectionDate;
+        const minutesDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        return minutesDifference > 2;
+      }
+      return false;
+    });
+
+    for (const user of inactiveUsers) {
+      await sendInactiveUserEmail(user.email);
+      await userService.delete(user._id);
+    }
+  } catch (error) {
+    console.log(error, "deleteInactiveUsers usersController");
+  }
+};
+
+const sendInactiveUserEmail = async (userEmail) => {
+  const mailOptions = {
+    from: "ecommerceBackEnd@gmail.com",
+    to: userEmail,
+    subject: "Cuenta Desactivada",
+    text: "Desactivamos tu cuenta por inactividad",
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error(`Error al enviar correo electrónico a ${userEmail}:`, error);
+  }
+};
+
+export default { showUsers, updateRole, deleteInactiveUsers };
