@@ -5,13 +5,10 @@ import adminAccess from "../middlewares/adminAccess.js";
 
 const router = Router();
 
-router.get(
-  "/usersManager",
-  privateRoutes,
-  adminAccess,
-  usersController.showUsers
-);
+router.get("/users", privateRoutes, adminAccess, usersController.showUsers);
 
-router.post("/usersManager/updateRole", usersController.updateRole);
+router.post("/users/updateRole", usersController.updateRole);
+
+router.delete("/users/delete");
 
 export default router;

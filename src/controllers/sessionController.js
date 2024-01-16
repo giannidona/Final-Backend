@@ -44,6 +44,14 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await userService.findOne({ username }).lean();
+
+    if (!user) {
+      return res.send("las credenciales no existen");
+    }
+    if (!bcrypt.compareSync(password, user.password)) {
+      return res.send("las credenciales no son correctas");
+    }
+
     const userMiniData = {
       username: user.username,
       role: user.role,
@@ -53,13 +61,6 @@ const login = async (req, res) => {
     const token = jwt.sign({ user: userMiniData }, JWT_PRIVATE_KEY, {
       expiresIn: "24h",
     });
-
-    if (!user) {
-      return res.send("las credenciales no existen");
-    }
-    if (!bcrypt.compare(password, user.password)) {
-      return res.send("las credenciales no son correctas");
-    }
 
     req.session.username = user.username;
     req.session.surname = user.surname;
@@ -74,4 +75,28 @@ const login = async (req, res) => {
   }
 };
 
-export default { register, login };
+const logout = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+
+    req.session.destroy(async (err) => {
+      if (err) {
+        console.error("Error al cerrar sesión:", err);
+        res.status(500).send("Error interno del servidor");
+      } else {
+        if (userId) {
+          const user = await userService.getById(userId);
+          if (user) {
+            user.last_connection = new Date();
+            await user.save();
+          }
+        }
+        res.redirect("/login");
+      }
+    });
+  } catch (error) {
+    console.error(error, "logout sessionController");
+  }
+};
+
+export default { register, login, logout };

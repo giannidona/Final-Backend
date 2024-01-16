@@ -14,6 +14,7 @@ import cartRouter from "./routes/cartRouter.js";
 import ticketRouter from "./routes/ticketRouter.js";
 import usersManagerRouter from "./routes/usersManagerRouter.js";
 import chatRouter from "./routes/chatRouter.js";
+import mailRouter from "./routes/mailRouter.js";
 
 import init from "./socket/server.js";
 
@@ -59,3 +60,4 @@ app.use(cartRouter);
 app.use(ticketRouter);
 app.use("/api", usersManagerRouter);
 app.use(chatRouter);
+app.use(mailRouter);

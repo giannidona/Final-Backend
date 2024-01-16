@@ -28,6 +28,15 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "carts",
   },
+  last_connection: {
+    type: Date,
+  },
+});
+
+userSchema.pre("save", function (next) {
+  const now = new Date();
+  this.last_connection = now;
+  next();
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

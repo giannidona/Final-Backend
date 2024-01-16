@@ -15,6 +15,8 @@ router.get("/login", publicRoutes, async (req, res) => {
 });
 router.post("/login", sessionController.login);
 
+router.get("/logout", sessionController.logout);
+
 router.get("/current", jwtAuth, (req, res) =>
   res.send({ status: "success", payload: req.user })
 );
