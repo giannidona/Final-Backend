@@ -17,7 +17,7 @@ const updateRole = async (req, res) => {
 
     await userService.updateRole(userId, role);
 
-    res.redirect("/api/usersManager/updateRole");
+    res.redirect("/api/users");
   } catch (error) {
     console.log(error, "updateRole usersController");
     res.status(500).json({ error: "Error al actualizar el rol del usuario" });

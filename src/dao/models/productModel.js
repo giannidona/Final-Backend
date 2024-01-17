@@ -23,6 +23,9 @@ const productSchema = new mongoose.Schema({
   prod_image: {
     type: String,
   },
+  owner: {
+    type: String,
+  },
 });
 
 productSchema.plugin(mongoosePaginate);

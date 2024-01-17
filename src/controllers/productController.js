@@ -4,12 +4,14 @@ const createProduct = async (req, res) => {
   try {
     const { prod_name, description, stock, price } = req.body;
     const prod_image = req.file.originalname;
+    const userEmail = req.session.email;
     const newProduct = await productService.create({
       prod_name,
       description,
       stock,
       price,
       prod_image,
+      owner: userEmail,
     });
     console.log(newProduct);
     res.redirect("/home");

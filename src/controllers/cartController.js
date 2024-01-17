@@ -7,6 +7,14 @@ const addToCart = async (req, res) => {
   try {
     const productId = req.params.productId;
     const userId = req.session.userId;
+    const userEmail = req.session.email;
+
+    const productData = await productService.getById({ _id: productId }).lean();
+    if (productData.owner === userEmail) {
+      return res
+        .status(403)
+        .send("No puedes agregar tu propio producto al carrito");
+    }
 
     const user = await userService.getById({ _id: userId }).populate("cart");
     const userCart = user.cart;
