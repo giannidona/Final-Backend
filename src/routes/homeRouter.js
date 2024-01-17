@@ -4,6 +4,6 @@ import privateRoutes from "../middlewares/privateRoutes.js";
 
 const router = Router();
 
-router.get("/home", privateRoutes, homeController.renderHome);
+router.get("/home/:pageId", privateRoutes, homeController.renderHome);
 
 export default router;

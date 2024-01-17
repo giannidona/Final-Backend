@@ -5,6 +5,22 @@ const renderHome = async (req, res) => {
     const { username, surname, email, role } = req.session;
     const products = await productService.getAll().lean();
 
+    const pageId = parseInt(req.params.pageId);
+
+    const result = await productService.getAllPaginated({
+      page: pageId,
+      limit: 3,
+      lean: true,
+    });
+
+    const prevLink = result.hasPrevPage
+      ? `http://localhost:8080/home/${result.prevPage}`
+      : false;
+
+    const nextLink = result.hasNextPage
+      ? `http://localhost:8080/home/${result.nextPage}`
+      : false;
+
     const productsWithStatus = products.map((product) => ({
       ...product,
       outOfStock: product.stock <= 0,
@@ -16,6 +32,9 @@ const renderHome = async (req, res) => {
       email,
       role,
       products: productsWithStatus,
+      products: result.docs,
+      prevLink,
+      nextLink,
     });
   } catch (error) {
     console.log(error, "renderHome homeController");

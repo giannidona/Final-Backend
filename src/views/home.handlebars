@@ -52,5 +52,16 @@
         </div>
       {{/each}}
     </section>
+    <section class="my-5 text-center text-2xl">
+      <div>
+        {{#if prevLink}}
+          <a class="bg-red-500 p-2 rounded" href="{{prevLink}}">previous page</a>
+        {{/if}}
+
+        {{#if nextLink}}
+          <a class="bg-red-500 p-2 rounded" href="{{nextLink}}">next page</a>
+        {{/if}}
+      </div>
+    </section>
   </body>
 </html>
