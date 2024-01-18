@@ -32,7 +32,6 @@ const recoverPassword = async (req, res) => {
     };
 
     await transporter.sendMail(message);
-    res.status(200).send("Correo de recuperación enviado");
   } catch (error) {
     console.log(error, "recoverPassword, recoverPasswordController");
   }
@@ -50,16 +49,12 @@ const resetPassword = async (req, res) => {
       return res.status(404).send("Id no encontrado");
     }
 
-    // Hashear la nueva contraseña antes de almacenarla
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Actualizar la contraseña del usuario
     user.password = hashedPassword;
 
-    // Guardar los cambios en la base de datos
     await userService.update(userId, user);
-
-    res.status(200).send("Contraseña restablecida con éxito");
+    res.redirect("/home/1");
   } catch (error) {
     console.error(error, "resetPassword, resetPasswordController");
     res.status(500).send("Error al restablecer la contraseña");
