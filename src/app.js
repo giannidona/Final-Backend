@@ -6,6 +6,8 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 import sessionsRouter from "./routes/sessionsRouter.js";
 import homeRouter from "./routes/homeRouter.js";
@@ -32,6 +34,21 @@ const httpServer = app.listen(PORT || 2020, () =>
 const socketServer = new Server(httpServer);
 init(socketServer);
 
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+
+    info: {
+      title: "Documentación E-commerce",
+      description: "Documentación",
+    },
+  },
+
+  apis: [`./src/docs/**/**.yaml`],
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
+
 mongoose.connect(MONGO_URL);
 
 app.use("/static", express.static("./public"));
@@ -50,6 +67,7 @@ app.use(
   })
 );
 
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 app.engine("handlebars", handlebars.engine());
 app.set("views", "./src/views");
 app.set("view engine", "handlebars");
