@@ -63,7 +63,7 @@ const deleteInactiveUsers = async (req, res) => {
 };
 
 const sendInactiveUserEmail = async (userEmail) => {
-  const mailOptions = {
+  const message = {
     from: "ecommerceBackEnd@gmail.com",
     to: userEmail,
     subject: "Cuenta Desactivada",
@@ -71,7 +71,7 @@ const sendInactiveUserEmail = async (userEmail) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(message);
   } catch (error) {
     console.error(`Error al enviar correo electrónico a ${userEmail}:`, error);
   }

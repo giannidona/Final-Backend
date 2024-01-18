@@ -9,12 +9,13 @@ import { Server } from "socket.io";
 
 import sessionsRouter from "./routes/sessionsRouter.js";
 import homeRouter from "./routes/homeRouter.js";
+import profileRouter from "./routes/profileRouter.js";
 import productManagerRouter from "./routes/productManagerRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import ticketRouter from "./routes/ticketRouter.js";
 import usersManagerRouter from "./routes/usersManagerRouter.js";
 import chatRouter from "./routes/chatRouter.js";
-import mailRouter from "./routes/mailRouter.js";
+import recoverPasswordRouter from "./routes/recoverPasswordRouter.js";
 
 import init from "./socket/server.js";
 
@@ -55,9 +56,10 @@ app.set("view engine", "handlebars");
 
 app.use(sessionsRouter);
 app.use(homeRouter);
+app.use(profileRouter);
 app.use("/api", productManagerRouter);
 app.use(cartRouter);
 app.use(ticketRouter);
 app.use("/api", usersManagerRouter);
 app.use(chatRouter);
-app.use(mailRouter);
+app.use(recoverPasswordRouter);
