@@ -26,11 +26,14 @@ const addToCart = async (req, res) => {
     let productInfo;
 
     productInfo = await productService.getById({ _id: productId }).lean();
-    console.log(productInfo);
 
     if (existingProduct) {
       existingProduct.quantity++;
-      existingProduct.price = existingProduct.quantity * existingProduct.price;
+      const updatedProductInfo = await productService
+        .getById({ _id: productId })
+        .lean();
+      existingProduct.price =
+        existingProduct.quantity * updatedProductInfo.price;
     } else {
       const productPrice = productInfo.price;
 
@@ -43,16 +46,58 @@ const addToCart = async (req, res) => {
       userCart.products.push(newProduct);
     }
 
-    userCart.products.forEach((product) => {
+    userCart.products.forEach(async (product) => {
+      const productInfo = await productService
+        .getById({ _id: product.product })
+        .lean();
       product.price = product.quantity * productInfo.price;
     });
 
     await cartService.update(userCart._id, { products: userCart.products });
-
+    console.log(userCart);
     res.redirect("/home/1");
   } catch (error) {
     console.log(error, "addToCart cartController");
     res.status(500).send("Error al agregar producto al carrito");
+  }
+};
+
+const deleteItemCart = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const productId = req.params.productId;
+
+    const user = await userService.getById({ _id: userId }).populate("cart");
+    const userCart = user.cart;
+
+    userCart.products = userCart.products.filter(
+      (product) => product.product.toString() !== productId.toString()
+    );
+
+    await cartService.update(userCart._id, { products: userCart.products });
+
+    res.redirect("/cart");
+  } catch (error) {
+    console.error(error, "deleteItemCart cartController");
+    res.status(500).send("Error deleting product from cart");
+  }
+};
+
+const emptyCart = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+
+    const user = await userService.getById({ _id: userId }).populate("cart");
+    const userCart = user.cart;
+
+    userCart.products = [];
+
+    await cartService.update(userCart._id, { products: userCart.products });
+
+    res.redirect("/cart");
+  } catch (error) {
+    console.error(error, "emptyCart cartController");
+    res.status(500).send("Error emptying the cart");
   }
 };
 
@@ -111,4 +156,4 @@ const generateUniqueCode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
 
-export default { addToCart, renderCart, ticket };
+export default { addToCart, deleteItemCart, emptyCart, renderCart, ticket };

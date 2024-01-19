@@ -26,8 +26,25 @@
           <p class="font-bold uppercase">{{this.product.prod_name}}</p>
           <p>Quantity: {{this.quantity}}</p>
           <p>${{this.price}}</p>
+          <a
+            href="/cart/delete/{{this.product._id}}"
+            class="bg-red-600 text-white font-bold py-2 px-5 rounded mt-2"
+          >
+            Remove from Cart
+          </a>
         </div>
       {{/each}}
+    </section>
+    <section class="text-center">
+      <div>
+        <a
+          href="/cart/empty"
+          class="bg-red-600 text-white font-bold py-2 px-5 rounded mt-2"
+        >
+          Empty Cart
+        </a>
+      </div>
+
       <div class="my-5">
         <a
           class="bg-green-600 text-white font-bold py-2 px-5 rounded mt-2"

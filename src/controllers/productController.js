@@ -14,7 +14,7 @@ const createProduct = async (req, res) => {
       owner: userEmail,
     });
     console.log(newProduct);
-    res.redirect("/home");
+    res.redirect("/home/1");
   } catch (error) {
     console.log(error, "createProduct productController");
   }
@@ -32,7 +32,7 @@ const deleteProduct = async (req, res) => {
 
     await productService.delete(productId);
 
-    res.redirect("/home");
+    res.redirect("/home/1");
   } catch (error) {
     console.log(error, "deleteProduct productController");
   }
