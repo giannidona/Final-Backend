@@ -9,7 +9,7 @@ const renderHome = async (req, res) => {
 
     const result = await productService.getAllPaginated({
       page: pageId,
-      limit: 3,
+      limit: 6,
       lean: true,
     });
 

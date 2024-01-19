@@ -5,30 +5,34 @@
     <title>Document</title>
   </head>
   <body>
-    <nav class="bg-red-500 flex justify-between p-5">
+    <nav class="bg-black flex justify-between p-5">
       <div>
-        <a href="/home">LOGO</a>
+        <a class="font-bold text-white" href="/home/1">E-COMMERCE</a>
       </div>
-      <div class="flex">
-        <a href="/home">home</a>
+      <div class="flex text-white font-bold">
         <a class="px-2" href="/chat">chat</a>
         <a class="px-2" href="/api/productManager">product manager</a>
-        <a href="/api/usersManager">user manager</a>
+        <a class="px-2" href="/api/users">user manager</a>
         <a class="px-2" href="/cart">cart</a>
+        <a class="px-2" href="/profile">profile</a>
       </div>
     </nav>
-
     <h2 class="text-center font-bold my-10">PRODUCTS IN CART</h2>
     <section class="container text-center m-auto">
       {{#each cart.products}}
-        <div class="bg-green-500 inline-flex mx-auto">
-          <p class="mx-5">{{this.product.prod_name}}</p>
-          <p class="mx-5">{{this.quantity}}</p>
-          <p class="mx-5">${{this.price}}</p>
+        <div
+          class="border-2 border-black flex flex-col items-center mx-auto mb-4 p-4 w-96 rounded"
+        >
+          <p class="font-bold uppercase">{{this.product.prod_name}}</p>
+          <p>Quantity: {{this.quantity}}</p>
+          <p>${{this.price}}</p>
         </div>
       {{/each}}
-      <div class="mt-5">
-        <a class="bg-yellow-500 p-2" href="/ticket">Finalize purcharse</a>
+      <div class="my-5">
+        <a
+          class="bg-green-600 text-white font-bold py-2 px-5 rounded mt-2"
+          href="/ticket"
+        >Finalize purcharse</a>
       </div>
     </section>
 

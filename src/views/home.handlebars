@@ -5,40 +5,39 @@
     <title>Document</title>
   </head>
   <body>
-    <nav class="bg-red-500 flex justify-between p-5">
+    <nav class="bg-black flex justify-between p-5">
       <div>
-        <a href="/home">LOGO</a>
+        <a class="font-bold text-white" href="/home/1">E-COMMERCE</a>
       </div>
-      <div class="flex">
-        <a href="/home">home</a>
+      <div class="flex text-white font-bold">
         <a class="px-2" href="/chat">chat</a>
         <a class="px-2" href="/api/productManager">product manager</a>
-        <a href="/api/usersManager">user manager</a>
+        <a class="px-2" href="/api/users">user manager</a>
         <a class="px-2" href="/cart">cart</a>
+        <a class="px-2" href="/profile">profile</a>
       </div>
     </nav>
-
-    <h2 class="text-center font-bold my-10">PRODUCTS</h2>
-    <section class="container m-auto grid grid-cols-3 gap-4 text-center">
+    <h1 class="text-center font-bold my-10 text-3xl">OUR PRODCUTS</h1>
+    <section class="w-8/12 mx-auto grid grid-cols-3 gap-4 place-items-center">
       {{#each products}}
-        <div class="bg-green-500">
+        <div class="border-2 border-black rounded w-64 text-center">
           <img src="../../static/{{this.prod_image}}" alt="" />
-          <p>{{this.prod_name}}</p>
-          <p>{{this.description}}</p>
-          <p>${{this.price}}</p>
-          <p>{{this.stock}} in stock</p>
+          <p class="py-3 font-bold uppercase">{{this.prod_name}}</p>
+          <p class="pb-3 italic">{{this.description}}</p>
+          <p class="pb-3">${{this.price}}</p>
+          <p class="pb-3">{{this.stock}} in stock</p>
           <form action="/cart/{{this._id}}" method="post">
             {{#if this.outOfStock}}
               <button
                 type="button"
-                class="bg-gray-400 my-2"
+                class="bg-red-500 text-white font-bold py-2 px-5 rounded my-2"
                 id="out-of-stock"
                 disabled
               >out of stock</button>
             {{else}}
               <button
                 type="submit"
-                class="bg-orange-200 my-2"
+                class="bg-black text-white font-bold py-2 px-5 rounded my-2"
                 id="add-to-cart"
               >add to cart</button>
             {{/if}}
@@ -47,13 +46,19 @@
       {{/each}}
     </section>
     <section class="my-5 text-center text-2xl">
-      <div>
+      <div class="my-10">
         {{#if prevLink}}
-          <a class="bg-red-500 p-2 rounded" href="{{prevLink}}">previous page</a>
+          <a
+            class="bg-black p-2 rounded uppercase font-bold text-white"
+            href="{{prevLink}}"
+          >previous page</a>
         {{/if}}
 
         {{#if nextLink}}
-          <a class="bg-red-500 p-2 rounded" href="{{nextLink}}">next page</a>
+          <a
+            class="bg-black p-2 rounded uppercase font-bold text-white"
+            href="{{nextLink}}"
+          >next page</a>
         {{/if}}
       </div>
     </section>

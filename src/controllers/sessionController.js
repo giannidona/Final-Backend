@@ -69,7 +69,7 @@ const login = async (req, res) => {
     req.session.isLogged = true;
     req.session.role = user.role;
 
-    return res.redirect("/home");
+    return res.redirect("/home/1");
   } catch (error) {
     console.log(error, "login sessionController");
   }

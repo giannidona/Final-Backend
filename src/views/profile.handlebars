@@ -5,12 +5,27 @@
     <title>Profile</title>
   </head>
   <body>
-    <div class="text-center pb-5">
-      <p>{{this.username}}</p>
-      <p>{{this.surname}}</p>
-      <p>{{this.email}}</p>
-      <p>{{this.role}}</p>
-    </div>
+    <nav class="bg-black flex justify-between p-5">
+      <div>
+        <a class="font-bold text-white" href="/home/1">E-COMMERCE</a>
+      </div>
+      <div class="flex text-white font-bold">
+        <a class="px-2" href="/chat">chat</a>
+        <a class="px-2" href="/api/productManager">product manager</a>
+        <a class="px-2" href="/api/users">user manager</a>
+        <a class="px-2" href="/cart">cart</a>
+        <a class="px-2" href="/profile">profile</a>
+      </div>
+    </nav>
+    <section class="w-96 mx-auto my-10">
+      <div class="border-2 border-black rounded text-center py-2">
+        <p>USERNAME: <span class="font-bold">{{this.username}}</span></p>
+        <p>SURNAME: <span class="font-bold">{{this.surname}}</span></p>
+        <p>EMAIL: <span class="font-bold">{{this.email}}</span></p>
+        <p>ROLE: <span class="font-bold">{{this.role}}</span></p>
+      </div>
+
+    </section>
     <div class="text-center">
       <a
         class="bg-red-700 p-2 rounded font-bold text-white"

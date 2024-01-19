@@ -5,36 +5,40 @@
     <title>dashboard</title>
   </head>
   <body>
-    <nav class="bg-red-500 flex justify-between p-5">
+    <nav class="bg-black flex justify-between p-5">
       <div>
-        <a href="/home">LOGO</a>
+        <a class="font-bold text-white" href="/home/1">E-COMMERCE</a>
       </div>
-      <div class="flex">
-        <a href="/home">home</a>
+      <div class="flex text-white font-bold">
         <a class="px-2" href="/chat">chat</a>
         <a class="px-2" href="/api/productManager">product manager</a>
-        <a href="/api/users">user manager</a>
+        <a class="px-2" href="/api/users">user manager</a>
         <a class="px-2" href="/cart">cart</a>
+        <a class="px-2" href="/profile">profile</a>
       </div>
     </nav>
 
     <section>
-      <h2 class="text-center my-5">USERS LIST</h2>
+      <h1 class="text-center font-bold my-10 text-3xl">USERS LIST</h1>
       <div class="flex justify-center">
         {{#each users}}
-          <div class="mx-5 border border-black p-2 rounded">
+          <div class="mx-5 border-2 border-black rounded p-2">
             <p>{{username}}</p>
             <p>{{email}}</p>
             <form action="/api/users/updateRole" method="post">
               <label for="role">Role:</label>
               <select name="role" id="role">
-                <option value="select" disabled>Select</option>
                 <option value="admin">Admin</option>
                 <option value="premium">Premium</option>
                 <option value="default">Default</option>
               </select>
               <input type="hidden" name="userId" value="{{_id}}" />
-              <button type="submit">Update</button>
+              <div>
+                <button
+                  type="submit"
+                  class="bg-green-600 text-white font-bold py-2 px-5 rounded mt-2"
+                >Update</button>
+              </div>
             </form>
           </div>
         {{/each}}

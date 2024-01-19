@@ -49,7 +49,7 @@ const addToCart = async (req, res) => {
 
     await cartService.update(userCart._id, { products: userCart.products });
 
-    res.redirect("/home");
+    res.redirect("/home/1");
   } catch (error) {
     console.log(error, "addToCart cartController");
     res.status(500).send("Error al agregar producto al carrito");

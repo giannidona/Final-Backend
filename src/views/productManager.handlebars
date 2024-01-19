@@ -6,125 +6,130 @@
     <title>CREATE PRODUCT</title>
   </head>
   <body class="">
-    <nav class="bg-red-500 flex justify-between p-5">
+    <nav class="bg-black flex justify-between p-5">
       <div>
-        <a href="/home">LOGO</a>
+        <a class="font-bold text-white" href="/home/1">E-COMMERCE</a>
       </div>
-      <div class="flex">
-        <a href="/home">home</a>
+      <div class="flex text-white font-bold">
         <a class="px-2" href="/chat">chat</a>
         <a class="px-2" href="/api/productManager">product manager</a>
-        <a href="/api/usersManager">user manager</a>
+        <a class="px-2" href="/api/users">user manager</a>
         <a class="px-2" href="/cart">cart</a>
+        <a class="px-2" href="/profile">profile</a>
       </div>
     </nav>
 
-    <section class="flex">
-      <form
-        class="mx-auto mt-5 bg-black text-white rounded"
-        action="/api/productManager"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <p class="text-center">CREATE PRODUCT</p>
-        <div class="m-5">
-          <div>
-            <label for="prod_name">PRODUCT NAME</label>
+    <section class="flex justify-center gap-5">
+      <div>
+        <form
+          class="mx-auto mt-5 bg-black text-white rounded"
+          action="/api/productManager"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <p class="text-center text-xl pt-5">CREATE PRODUCT</p>
+          <div class="m-5">
+            <div>
+              <label for="prod_name">PRODUCT NAME</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="text"
+                id="prod_name"
+                name="prod_name"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="text"
-              id="prod_name"
-              name="prod_name"
-            />
+          <div class="m-5">
+            <div>
+              <label for="description">DESCRIPTION</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="text"
+                id="description"
+                name="description"
+              />
+            </div>
           </div>
-        </div>
-        <div class="m-5">
-          <div>
-            <label for="description">DESCRIPTION</label>
+          <div class="m-5">
+            <div>
+              <label for="stock">STOCK</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="number"
+                id="stock"
+                name="stock"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="text"
-              id="description"
-              name="description"
-            />
+          <div class="m-5">
+            <div>
+              <label for="price">PRICE</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="number"
+                id="price"
+                name="price"
+              />
+            </div>
           </div>
-        </div>
-        <div class="m-5">
-          <div>
-            <label for="stock">STOCK</label>
+          <div class="m-5">
+            <div>
+              <label for="prod_image">PRODUCT IMAGE</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="file"
+                id="prod_image"
+                name="file"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="number"
-              id="stock"
-              name="stock"
-            />
+          <div class="m-5 text-center">
+            <button
+              class="bg-white text-black rounded px-2 font-bold mb-5"
+              type="submit"
+            >CREATE</button>
           </div>
-        </div>
-        <div class="m-5">
-          <div>
-            <label for="price">PRICE</label>
+        </form>
+      </div>
+      <div>
+        <form
+          class="mx-auto mt-5 bg-black text-white rounded"
+          action="/api/productManager/delete"
+          method="post"
+        >
+          <p class="text-center my-5 text-xl pt-5">DELETE PRODUCT</p>
+          <div class="m-5">
+            <div>
+              <label for="prodId">PRODUCT ID</label>
+            </div>
+            <div>
+              <input
+                class="text-black rounded mt-2"
+                type="text"
+                id="prodId"
+                name="prodId"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="number"
-              id="price"
-              name="price"
-            />
+          <div class="m-5 text-center">
+            <button
+              class="bg-white text-black rounded px-2 font-bold mb-5"
+              type="submit"
+            >DELETE</button>
           </div>
-        </div>
-        <div class="m-5">
-          <div>
-            <label for="prod_image">PRODUCT IMAGE</label>
-          </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="file"
-              id="prod_image"
-              name="file"
-            />
-          </div>
-        </div>
-        <div class="m-5 text-center">
-          <button
-            class="bg-white text-black rounded px-2 font-bold"
-            type="submit"
-          >CREATE</button>
-        </div>
-      </form>
-      <form
-        class="mx-auto mt-5 bg-black text-white rounded"
-        action="/api/productManager/delete"
-        method="post"
-      >
-        <p class="text-center">DELETE PRODUCT</p>
-        <div class="m-5">
-          <div>
-            <label for="prodId">PRODUCT ID</label>
-          </div>
-          <div>
-            <input
-              class="text-black rounded mt-2"
-              type="text"
-              id="prodId"
-              name="prodId"
-            />
-          </div>
-        </div>
-        <div class="m-5 text-center">
-          <button
-            class="bg-white text-black rounded px-2 font-bold"
-            type="submit"
-          >DELETE</button>
-        </div>
-      </form>
+        </form>
+      </div>
+
     </section>
   </body>
 </html>
