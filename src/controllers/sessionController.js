@@ -3,6 +3,7 @@ import { cartService } from "../services/services.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_PRIVATE_KEY } from "../config/constants.js";
+import { logger } from "../utils.js/logger.js";
 
 const register = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ const register = async (req, res) => {
 
     res.redirect("/login");
   } catch (error) {
-    console.error(error, "register sessionController");
+    logger.error(error, "register sessionController");
     res.status(500).send("Error al registrar usuario");
   }
 };
@@ -35,8 +36,7 @@ const createCart = async (userData) => {
 
     return newUser;
   } catch (error) {
-    console.error(error, "createCart sessionController");
-    throw new Error("Error al crear usuario y carrito");
+    logger.error(error, "createCart sessionController");
   }
 };
 
@@ -56,7 +56,6 @@ const login = async (req, res) => {
       username: user.username,
       role: user.role,
     };
-    console.log(userMiniData);
 
     const token = jwt.sign({ user: userMiniData }, JWT_PRIVATE_KEY, {
       expiresIn: "24h",
@@ -71,7 +70,7 @@ const login = async (req, res) => {
 
     return res.redirect("/home/1");
   } catch (error) {
-    console.log(error, "login sessionController");
+    logger.error(error, "login sessionController");
   }
 };
 
@@ -95,7 +94,7 @@ const logout = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error, "logout sessionController");
+    logger.error(error, "logout sessionController");
   }
 };
 

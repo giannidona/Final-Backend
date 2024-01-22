@@ -15,6 +15,26 @@ paths:
                   $ref: "#/components/schemas/User"
         "500":
           description: "error getting users"
+  /api/users/delete:
+    delete:
+      summary: "delete all users with 2 days of inactivity"
+      tags:
+        - Users
+      responses:
+        "200":
+          description: "successfully deleted"
+        "500":
+          description: "error deleting users"
+  /api/users/update:
+    post:
+      summary: "update user role"
+      tags:
+        - Users
+      responses:
+        "200":
+          description: "successfully updated"
+        "500":
+          description: "error updating user"
   /login:
     get:
       summary: "logged user"

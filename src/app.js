@@ -20,11 +20,14 @@ import chatRouter from "./routes/chatRouter.js";
 import recoverPasswordRouter from "./routes/recoverPasswordRouter.js";
 
 import init from "./socket/server.js";
+import { logger } from "./utils.js/logger.js";
+import { errors } from "./middlewares/errors.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
 const SECRET = process.env.SECRET;
+const ENVIROMENT = process.env.ENVIROMENT;
 
 const app = express();
 const httpServer = app.listen(PORT || 2020, () =>
@@ -67,6 +70,7 @@ app.use(
   })
 );
 
+app.use(errors);
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 app.engine("handlebars", handlebars.engine());
 app.set("views", "./src/views");

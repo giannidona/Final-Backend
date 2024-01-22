@@ -21,17 +21,11 @@ const renderHome = async (req, res) => {
       ? `http://localhost:8080/home/${result.nextPage}`
       : false;
 
-    const productsWithStatus = products.map((product) => ({
-      ...product,
-      outOfStock: product.stock <= 0,
-    }));
-
     res.render("home", {
       username,
       surname,
       email,
       role,
-      products: productsWithStatus,
       products: result.docs,
       prevLink,
       nextLink,

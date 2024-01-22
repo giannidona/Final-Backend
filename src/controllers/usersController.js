@@ -1,5 +1,6 @@
 import { userService } from "../services/services.js";
 import nodemailer from "nodemailer";
+import { logger } from "../utils.js/logger.js";
 
 const showUsers = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ const showUsers = async (req, res) => {
 
     res.render("usersManager", { users });
   } catch (error) {
-    console.log(error, "showUsers dashboardController");
+    logger.error(error, "showUsers dashboardController");
   }
 };
 
@@ -19,7 +20,7 @@ const updateRole = async (req, res) => {
 
     res.redirect("/api/users");
   } catch (error) {
-    console.log(error, "updateRole usersController");
+    logger.error(error, "updateRole usersController");
     res.status(500).json({ error: "Error al actualizar el rol del usuario" });
   }
 };
@@ -58,7 +59,7 @@ const deleteInactiveUsers = async (req, res) => {
       await userService.delete(user._id);
     }
   } catch (error) {
-    console.log(error, "deleteInactiveUsers usersController");
+    logger.error(error, "deleteInactiveUsers usersController");
   }
 };
 
@@ -73,7 +74,7 @@ const sendInactiveUserEmail = async (userEmail) => {
   try {
     await transporter.sendMail(message);
   } catch (error) {
-    console.error(`Error al enviar correo electrónico a ${userEmail}:`, error);
+    logger.error(`Error al enviar correo electrónico a ${userEmail}:`, error);
   }
 };
 

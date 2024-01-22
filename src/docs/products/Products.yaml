@@ -82,6 +82,8 @@ components:
         prod_img:
           type: String
           default: product image
+        owner:
+          type: String
       example:
         _id: ObjectId(020323089j2a2ad24)
         prod_name: Iphone 14

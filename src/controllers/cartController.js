@@ -2,6 +2,7 @@ import { cartService } from "../services/services.js";
 import { userService } from "../services/services.js";
 import { productService } from "../services/services.js";
 import { ticketService } from "../services/services.js";
+import { logger } from "../utils.js/logger.js";
 
 const addToCart = async (req, res) => {
   try {
@@ -54,10 +55,9 @@ const addToCart = async (req, res) => {
     });
 
     await cartService.update(userCart._id, { products: userCart.products });
-    console.log(userCart);
     res.redirect("/home/1");
   } catch (error) {
-    console.log(error, "addToCart cartController");
+    logger.error(error, "Error al agregar producto al carrito");
     res.status(500).send("Error al agregar producto al carrito");
   }
 };
@@ -78,7 +78,7 @@ const deleteItemCart = async (req, res) => {
 
     res.redirect("/cart");
   } catch (error) {
-    console.error(error, "deleteItemCart cartController");
+    logger.error(error, "deleteItemCart cartController");
     res.status(500).send("Error deleting product from cart");
   }
 };
@@ -147,7 +147,7 @@ const ticket = async (req, res) => {
 
     res.render("ticket", { ticket: newTicket });
   } catch (error) {
-    console.error(error, "ticket cartController");
+    logger.error(error, "ticket cartController");
     res.status(500).json({ message: "Error during checkout", error });
   }
 };

@@ -40,7 +40,6 @@ const recoverPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { userId } = req.session;
   const { newPassword } = req.body;
-  console.log(newPassword);
 
   try {
     const user = await userService.findOne({ _id: userId });
@@ -56,7 +55,7 @@ const resetPassword = async (req, res) => {
     await userService.update(userId, user);
     res.redirect("/home/1");
   } catch (error) {
-    console.error(error, "resetPassword, resetPasswordController");
+    logger.error(error, "resetPassword, resetPasswordController");
     res.status(500).send("Error al restablecer la contraseña");
   }
 };
